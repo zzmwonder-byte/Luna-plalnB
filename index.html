@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>向月而生 · 共赢未来</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #fff;
+  color: #1a1a2e;
+  overflow-y: scroll;
+  -webkit-font-smoothing: antialiased;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 28px 40px;
+  position: relative;
+  overflow: hidden;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.dots {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.dot.active {
+  background: #0055ff;
+  transform: scale(1.5);
+}
+
+.next {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  animation: bounce 2s infinite;
+  opacity: 0.4;
+}
+
+.next span { font-size: 9px; color: #999; letter-spacing: 1px; }
+.next svg { width: 16px; height: 16px; stroke: #999; }
+
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(4px); }
+}
+
+.slide:last-child .next { display: none; }
+
+.label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #0055ff;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.question {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 24px;
+  color: #1a1a2e;
+}
+
+.block {
+  margin-bottom: 14px;
+}
+
+.block-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0055ff;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.block-title .num {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: #0055ff;
+  color: #fff;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.block-text {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.7;
+  padding-left: 24px;
+}
+
+.block-text strong {
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.card {
+  background: #f8f9fc;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0055ff;
+  margin-bottom: 3px;
+}
+
+.card-text {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.datarow {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.dbox {
+  flex: 1;
+  background: #f8f9fc;
+  border-radius: 8px;
+  padding: 12px 6px;
+  text-align: center;
+}
+
+.dbox .num {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0055ff;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.dbox .txt {
+  font-size: 10px;
+  color: #888;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.tbl th {
+  text-align: left;
+  padding: 8px 5px;
+  background: #f0f4ff;
+  color: #0055ff;
+  font-weight: 700;
+  font-size: 10px;
+}
+
+.tbl td {
+  padding: 9px 5px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #444;
+  vertical-align: top;
+}
+
+.tbl .r { font-weight: 700; color: #1a1a2e; white-space: nowrap; }
+
+.cover {
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(180deg, #fafbfc 0%, #fff 100%);
+}
+
+.cover .badge {
+  font-size: 11px;
+  color: #0055ff;
+  background: #eef2ff;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.cover .moon {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0%, #e0e0e0 40%, #b0b0b0 100%);
+  box-shadow: inset -12px -12px 24px rgba(0,0,0,0.12), 0 12px 36px rgba(0,0,0,0.08);
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.cover .moon::before {
+  content: ''; position: absolute;
+  top: 28%; left: 22%; width: 20%; height: 20%;
+  border-radius: 50%;
+  background: rgba(160,160,160,0.3);
+  box-shadow: 14px 10px 0 -2px rgba(160,160,160,0.25);
+}
+
+.cover h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.cover .sub {
+  font-size: 15px;
+  color: #666;
+  letter-spacing: 5px;
+  margin-bottom: 32px;
+}
+
+.cover .slogan {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.9;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  max-width: 260px;
+}
+
+.end {
+  align-items: center;
+  text-align: center;
+  background: #fafbfc;
+}
+
+.end h2 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.end .en {
+  font-size: 11px;
+  color: #aaa;
+  letter-spacing: 3px;
+  margin-bottom: 32px;
+}
+
+.end .contact {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 18px;
+  width: 100%;
+  max-width: 300px;
+  text-align: left;
+}
+
+.end .contact .lb {
+  font-size: 10px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.end .contact p {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.end .contact .conf {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+.fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media print {
+  .slide { page-break-after: always; height: auto; min-height: 100vh; }
+  .dots, .next { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="dots">
+  <button class="dot active" onclick="go(0)"></button>
+  <button class="dot" onclick="go(1)"></button>
+  <button class="dot" onclick="go(2)"></button>
+  <button class="dot" onclick="go(3)"></button>
+  <button class="dot" onclick="go(4)"></button>
+  <button class="dot" onclick="go(5)"></button>
+  <button class="dot" onclick="go(6)"></button>
+  <button class="dot" onclick="go(7)"></button>
+  <button class="dot" onclick="go(8)"></button>
+  <button class="dot" onclick="go(9)"></button>
+  <button class="dot" onclick="go(10)"></button>
+</div>
+
+<!-- 1. 封面 -->
+<section class="slide cover" id="s0">
+  <div class="fade">
+    <div class="badge">中国首家商业月球公司</div>
+    <div class="moon"></div>
+    <h1>向月而生</h1>
+    <div class="sub">共赢未来</div>
+    <div class="slogan">
+      地月航班化运输服务商<br>构建商业月面任务平台
+    </div>
+  </div>
+  <div class="next"><span>向下滑动</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 2. 趋势 -->
+<section class="slide" id="s1">
+  <div class="fade">
+    <div class="label">Industry Trend</div>
+    <div class="question">月球探测新时期</div>
+    <div class="block">
+      <div class="block-title"><span class="num">I</span>历史演进</div>
+      <div class="block-text">1957-1979 竞争期 → 1990-2020 发展期 → <strong>2021 至今 新时期</strong>，驱动力从"展示意志"转向"认识+利用"</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">II</span>四大结构性转变</div>
+      <div class="block-text">
+        ① 技术突破 → 资源开发利用<br>
+        ② 短期访问 → 长期驻留<br>
+        ③ 政府主导 → 商业参与<br>
+        ④ 单一国家 → 联合探测
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">III</span>核心瓶颈</div>
+      <div class="block-text">月面投送能力 = 地月经济"带宽"，是一切月面活动的基础设施前提</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 3. 市场格局 -->
+<section class="slide" id="s2">
+  <div class="fade">
+    <div class="label">Market Landscape</div>
+    <div class="question">全球竞争格局</div>
+    <div class="card">
+      <div class="card-title">美国</div>
+      <div class="card-text">NASA CLPS 已授出 <strong>20+</strong> 份合同，总额超 <strong>68 亿美元</strong>；未来十年追加 <strong>60 亿美元</strong>；Moon Base 计划未来 10 年实施 <strong>73 次</strong>月面着陆</div>
+    </div>
+    <div class="card">
+      <div class="card-title">欧洲</div>
+      <div class="card-text">ESA 全面开放商业航天参与 Moonlight 通信导航星座、MAGPIE 极地水冰勘探、Argonaut 货运着陆器</div>
+    </div>
+    <div class="card">
+      <div class="card-title">中国</div>
+      <div class="card-text">探月工程"绕落回"已完成，国际月球科研站 <strong>17 国</strong>参与；<strong>尚无商业月球公司</strong>，市场空白</div>
+    </div>
+    <div class="datarow">
+      <div class="dbox"><div class="num">40+</div><div class="txt">全球商业月球探测公司</div></div>
+      <div class="dbox"><div class="num">10+</div><div class="txt">纯商业登月公司</div></div>
+      <div class="dbox"><div class="num">0</div><div class="txt">中国商业月球公司</div></div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 4. 壁垒 -->
+<section class="slide" id="s3">
+  <div class="fade">
+    <div class="label">Competitive Moat</div>
+    <div class="question">壁垒与优势</div>
+    <div class="block">
+      <div class="block-title"><span class="num">1</span>行业壁垒</div>
+      <div class="block-text">月球探测长周期、大系统、强耦合，技术门槛极高。从方案论证到首发任务需 <strong>3-5 年</strong>，涉及探测器、测控、火箭、发射四大跨系统协同，非普通商业航天团队可跨界复制。</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">2</span>破壁能力</div>
+      <div class="block-text">总师级创始人团队跨系统整合资源要素；工程大总体经验与行业权威背书；稀缺商业价值驱动团队快速成型。</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 5. 竞争格局（新增） -->
+<section class="slide" id="s4">
+  <div class="fade">
+    <div class="label">Competitive Landscape</div>
+    <div class="question">竞争格局与应对</div>
+    <div class="card">
+      <div class="card-title">体制内月球探测队伍</div>
+      <div class="card-text">技术积累与国家任务经验最强，但聚焦国家任务，商业搭载、产业合作、市场化空间有限。<strong>应对：填补其商业溢出空白。</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">近地卫星/空间站载荷服务商</div>
+      <div class="card-text">已规模化培育科研和企业客户，但主要服务微重力、低轨场景，不提供真实月面任务。<strong>应对：独占月面场景赛道。</strong></div>
+    </div>
+    <div class="card">
+      <div class="card-title">海外商业月球公司</div>
+      <div class="card-text">Intuitive Machines、Firefly、Astrobotic 等已形成先发优势，但无法进入国内市场，非 NASA 市场范围。<strong>应对：卡位中国空白赛道。</strong></div>
+    </div>
+    <div class="block" style="margin-top:12px;">
+      <div class="block-title"><span class="num">▲</span>核心策略</div>
+      <div class="block-text">率先卡位中国商业月球探测赛道，形成事实标准与品牌心智，构建<strong>"体制内溢出+近地场景升级+海外替代"</strong>三重承接能力。</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 6. 定位 -->
+<section class="slide" id="s5">
+  <div class="fade">
+    <div class="label">Positioning</div>
+    <div class="question">战略定位</div>
+    <div class="block">
+      <div class="block-title"><span class="num">A</span>定位</div>
+      <div class="block-text">中国首家商业月球公司，地月航班化运输服务商，构建商业月面任务平台</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">B</span>逻辑</div>
+      <div class="block-text">将"登月"从国家工程转化为商业化服务；实现地月物资大规模航班化运输；拓展月球资源开发与月球旅游</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">C</span>价值</div>
+      <div class="block-text">在实现商业回报的同时，助力维护我国月球权益，培育未来产业能力</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 7. 客户 -->
+<section class="slide" id="s6">
+  <div class="fade">
+    <div class="label">Customer Segments</div>
+    <div class="question">目标市场</div>
+    <div class="card">
+      <div class="card-title">国家工程</div>
+      <div class="card-text">月球探测后续任务、国际月球科研站、载人登月、原位资源利用等专项任务，需商业解决方案提质增效</div>
+    </div>
+    <div class="card">
+      <div class="card-title">科学用户</div>
+      <div class="card-text">科研院所、空间科学团队、高校等，需月面实验席位、一手科研数据与高端科学成果</div>
+    </div>
+    <div class="card">
+      <div class="card-title">产业用户</div>
+      <div class="card-text">AI 芯片、传感器、机器人、新材料、新能源等硬科技企业，需地月场景验证与工程履历</div>
+    </div>
+    <div class="card">
+      <div class="card-title">国际用户</div>
+      <div class="card-text">新兴航天国家、国际高校联盟、科技城等，需低门槛参与真实月球任务的通道</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 8. 市场 -->
+<section class="slide" id="s7">
+  <div class="fade">
+    <div class="label">Market Size</div>
+    <div class="question">市场空间</div>
+    <div class="datarow">
+      <div class="dbox"><div class="num">万亿级</div><div class="txt">TAM<br>远期月球经济<br>(PwC, 2040)</div></div>
+      <div class="dbox"><div class="num">564亿</div><div class="txt">SAM<br>可服务市场<br>(月面投送能力)</div></div>
+      <div class="dbox"><div class="num">75亿+</div><div class="txt">SOM<br>近期可获取<br>(首发周期)</div></div>
+    </div>
+    <div class="block" style="margin-top:16px;">
+      <div class="block-title"><span class="num">1</span>定价参考</div>
+      <div class="block-text">NASA CLPS 1.0 服务均价 <strong>100-110 万美元/kg</strong>；Intuitive Machines 月面载荷投送 <strong>120 万美元/kg</strong></div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">2</span>需求测算</div>
+      <div class="block-text">ESA 称未来 20 年全球规划月球任务超 <strong>400 次</strong>；ILRS 建设预计需向月面投送 <strong>100t</strong> 物质</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">3</span>市占假设</div>
+      <div class="block-text">2033-2035 年每年获取 4t 订单，2036-2040 年每年 8t，共计投送 52t（市占率 13%）</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 9. 路径 -->
+<section class="slide" id="s8">
+  <div class="fade">
+    <div class="label">Development Roadmap</div>
+    <div class="question">发展路径</div>
+    <div class="block">
+      <div class="block-title"><span class="num">A</span>阶段一：技术验证（2026-2029）</div>
+      <div class="block-text">研制 4t 级着陆器（XX-1），验证低成本月面着陆关键技术；具备向月面投送 <strong>300-500kg</strong> 能力；2029 年实施首发任务</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">B</span>阶段二：地月往返（2029-2034）</div>
+      <div class="block-text">研制 8t 级着陆器（XX-2），实现月面返回；具备向月面投送 <strong>1.6t</strong> 能力；验证氦-3 提取、纯化、储存工艺</div>
+    </div>
+    <div class="block">
+      <div class="block-title"><span class="num">C</span>阶段三：航班化运输（2034-2040）</div>
+      <div class="block-text">研制 50t 级可重复使用着陆器，实现人员与物资大规模地月往返；开展月面资源利用与基础设施建设</div>
+    </div>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 10. 融资 -->
+<section class="slide" id="s9">
+  <div class="fade">
+    <div class="label">Financing Plan</div>
+    <div class="question">融资规划</div>
+    <table class="tbl">
+      <tr><th>轮次</th><th>时间</th><th>金额</th><th>投后估值</th><th>里程碑</th></tr>
+      <tr><td><span class="r">天使轮</span></td><td>2026.08</td><td><strong>1亿元</strong></td><td>10亿</td><td>首发任务立项、总体方案论证、公司组建</td></tr>
+      <tr><td><span class="r">A轮</span></td><td>2027.10</td><td><strong>6亿元</strong></td><td>40亿</td><td>着陆悬停实验、关键合作框架锁定</td></tr>
+      <tr><td><span class="r">B轮</span></td><td>2029.09</td><td><strong>15亿元</strong></td><td>100亿</td><td>首发任务成功、商业订单兑现</td></tr>
+    </table>
+  </div>
+  <div class="next"><span>继续</span><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- 11. 尾页 -->
+<section class="slide end" id="s10">
+  <div class="fade">
+    <div class="moon" style="width:70px;height:70px;margin:0 auto 20px;"></div>
+    <h2>向月而生 · 共赢未来</h2>
+    <div class="en">BORN FOR MOON · WIN THE FUTURE</div>
+    <div class="contact">
+      <div class="lb">Project</div>
+      <p style="font-weight:700;color:#1a1a2e;">中国首家商业月球公司</p>
+      <div class="lb">Status</div>
+      <p>天使轮开放中，欢迎预约深度沟通</p>
+      <div class="conf">本材料仅供投资评估使用，所含信息受保密协议保护。</div>
+    </div>
+  </div>
+</section>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function go(idx) {
+  slides[idx].scrollIntoView({ behavior: 'smooth' });
+}
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = Array.from(slides).indexOf(e.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      e.target.querySelector('.fade').classList.add('show');
+    }
+  });
+}, { threshold: 0.6 });
+
+slides.forEach(s => io.observe(s));
+setTimeout(() => document.querySelector('#s0 .fade').classList.add('show'), 100);
+</script>
+
+</body>
+</html>
